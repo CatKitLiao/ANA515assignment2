@@ -1,0 +1,51 @@
+---
+title: "ANA 515 Assignment 2"
+author: Catherine Liao
+date: 2023
+output: 
+  word_document
+---
+#Section 1: Description of the data
+#The dataset I'm using contains sleeping data about people who are in different relationship statuses - or more specifically, data about whether these people are sleeping in the same beds with their partners (if not, why). The data was collected from questionnaire responses. I'm hoping to use it answer questions about the correlations between relationship status and sleeping behaviors. This dataset is saved in a csv file that's fixed width.
+
+#Section 2: Reading the data into R
+#I used read_csv, which comes from the "readr" package.
+
+
+``` {r, show_col_types = FALSE}
+library(readr)
+url <- "https://github.com/fivethirtyeight/data/blob/master/sleeping-alone-data/sleeping-alone-data.csv" 
+newdoc <- read_csv(url)
+```
+
+#Section 3: Clean the data
+```{r, echo = TRUE}
+library(tidyverse)
+library(bslib)
+colnames(newdoc) <- c("nd_column1", "nd_column2","nd_column3", "nd_column4", "nd_column5")
+```
+
+#Section 4: Characteristics of the data
+#Inline Code
+This dataframe has `r nrow(newdoc)` rows and `r nrow(newdoc)` columns. The names of the columns and a brief description of each are in the table below:
+
+```{r, echo = TRUE}
+library(knitr)
+column_info <- data.frame(
+  Column_Name = c("nd_column1", "nd_column2", "nd_column3", "nd_column4", "nd_column5"),
+  Description = c("TheStartDate", "TheEndDate", "CurrentRelationshipStatus", "LengthofRelationship", "SleepingStatus")
+)
+kable(column_info, format = "markdown", col.names = c("Column_Name", "Description"))
+```
+
+#Section 5: Summary Statistics
+``` {r, echo = TRUE}
+data_pick3 <- select(newdoc, "nd_column1","nd_column2", "nd_column3")
+summary <- summary(data_pick3)
+missing_values <- colSums(is.na(data_pick3))
+summary <- cbind(summary, missing_values)
+print(summary)
+```
+
+
+
